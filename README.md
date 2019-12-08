@@ -1,24 +1,13 @@
-# calculator
+# Vue.js Calculator
 
-## Project setup
+Vue.js calculator with last calculations at the top.
+
+## How run app
 ```
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Preview
+![Alt text](/src/assets/calculator.png?raw=true "Calculator in VueJs")
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
