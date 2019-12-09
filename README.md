@@ -9,5 +9,5 @@ npm run serve
 ```
 
 ### Preview
-![Alt text](/src/assets/calculator.png?raw=true "Calculator in VueJs")
+![Alt text](/src/assets/calculator.png?raw=true "Calculator in Vue.js")
 
