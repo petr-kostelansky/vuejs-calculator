@@ -1,33 +1,34 @@
 <template>
   <div class="calculator">
     <div class="history">
-      <div v-for="item in history" v-bind:key="item">
+      <div v-for="(item, index) in history" v-bind:key="index">
         {{ item }}
       </div>
     </div>
     <div class="result">{{ statement + currentValue }}</div>
-    <div @click="clear" class="button operator">AC</div>
-    <div @click="reverse" class="button operator">+/-</div>
-    <div @click="addOperator('/')" class="button operator">/</div>
-    <div @click="addOperator('*')" class="button operator">*</div> 
-    <div @click="append('7')" class="button">7</div>
-    <div @click="append('8')" class="button">8</div>
-    <div @click="append('9')" class="button">9</div>
-    <div @click="addOperator('-')" class="button operator">-</div> 
-    <div @click="append('4')" class="button">4</div>
-    <div @click="append('5')" class="button">5</div> 
-    <div @click="append('6')" class="button">6</div>
-    <div @click="addOperator('+')" class="button operator">+</div> 
-    <div @click="append('1')" class="button">1</div> 
-    <div @click="append('2')" class="button">2</div> 
-    <div @click="append('3')" class="button">3</div> 
-    <div @click="append('0')" class="button zero">0</div> 
-    <div @click="dot" class="button">.</div> 
-    <div @click="equal" class="button operator equal">=</div> 
+    <button @click="clear" class="button operator">AC</button>
+    <button @click="reverse" class="button operator" :disabled="isDisabled">+/-</button>
+    <button @click="addOperator('/')" class="button operator" :disabled="isDisabled">/</button>
+    <button @click="addOperator('*')" class="button operator" :disabled="isDisabled">*</button> 
+    <button @click="append('7')" class="button" :disabled="isDisabled">7</button>
+    <button @click="append('8')" class="button" :disabled="isDisabled">8</button>
+    <button @click="append('9')" class="button" :disabled="isDisabled">9</button>
+    <button @click="addOperator('-')" class="button operator" :disabled="isDisabled">-</button> 
+    <button @click="append('4')" class="button" :disabled="isDisabled">4</button>
+    <button @click="append('5')" class="button" :disabled="isDisabled">5</button> 
+    <button @click="append('6')" class="button" :disabled="isDisabled">6</button>
+    <button @click="addOperator('+')" class="button operator" :disabled="isDisabled">+</button> 
+    <button @click="append('1')" class="button" :disabled="isDisabled">1</button> 
+    <button @click="append('2')" class="button" :disabled="isDisabled">2</button> 
+    <button @click="append('3')" class="button" :disabled="isDisabled">3</button> 
+    <button @click="append('0')" class="button zero" :disabled="isDisabled">0</button> 
+    <button @click="dot" class="button" :disabled="isDisabled">.</button> 
+    <button @click="equal" class="button operator equal" :disabled="isDisabled">=</button> 
   </div>
 </template>
 
 <script>
+/* eslint-disable no-debugger */
 export default {
   name: 'Calculator',
   data() {
@@ -36,7 +37,8 @@ export default {
       statement: "",
       currentValue: "",
       operatorAdded: false,
-      isFirstCalculated: false
+      isFirstCalculated: false,
+      isDisabled: false
     };
   },
   methods: {
@@ -44,8 +46,9 @@ export default {
       this.history = [];
       this.statement = "";
       this.currentValue = "";
-      this.operatorAdded = true;
+      this.operatorAdded = false;
       this.isFirstCalculated = false;
+      this.isDisabled = false;
     },
     reverse() {
       if (this.currentValue != "") {
@@ -64,6 +67,10 @@ export default {
 
       this.history.splice(0, 0, `${this.statement}${this.currentValue}`);
       this.statement = eval(this.statement + this.currentValue);
+
+      if (!isFinite(this.statement) || isNaN(this.statement)) 
+        this.isDisabled = true;
+
       this.isFirstCalculated = true;
       this.operatorAdded = false;
       this.currentValue = "";
@@ -78,7 +85,7 @@ export default {
     append(number) {
       if (this.isFirstCalculated && !this.operatorAdded) return;
 
-      if (this.currentValue === "0" && number !== ".") {
+      if ((this.currentValue === "0" || this.currentValue === "-0") && number !== ".") {
         this.currentValue = "";
       }
       
@@ -108,6 +115,13 @@ export default {
   color: #07575B;
   background-color: #66A5AD;
   border-radius: 5px;
+  border: 0;
+}
+button:disabled {
+  cursor: initial;
+  background-color: #C4DFE6;
+  color: #66A5AD;
+  border: 1px solid #66A5AD;
 }
 .operator {
   background-color: #07575B;
