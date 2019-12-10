@@ -2,7 +2,7 @@
   <div class="calculator">
     <div class="history">
       <div v-for="(item, index) in history" v-bind:key="index">
-        {{ item }}
+        {{ history.length - index }}: {{ item }}
       </div>
     </div>
     <div class="result">{{ statement + currentValue }}</div>
@@ -76,7 +76,10 @@ export default {
       this.currentValue = "";
     },
     addOperator(operator) {
-      if (this.operatorAdded) return;
+      if (this.operatorAdded) {
+        if (this.currentValue) this.equal();
+        else return;
+      }
 
       this.operatorAdded = true;
       this.statement += `${this.currentValue} ${operator} `;
